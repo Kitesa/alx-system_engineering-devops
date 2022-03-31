@@ -1,3 +1,2 @@
 #!/bin/bash
-chmod u-xrw, p-rxw, o+rxw hello
 chmod u-xrw,g-rxw,o+rxw hello
