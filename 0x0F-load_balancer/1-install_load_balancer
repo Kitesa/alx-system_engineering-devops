@@ -1,19 +1,13 @@
 #!/usr/bin/env bash
-# Configures a brand new Ubuntu server (16.04 LTS) with 
-# HAProxy version 2.0-stable (LTS)
-# apt-get -y install --no-install-recommends software-properties-common
-# add-apt-repository -y ppa:vbernat/haproxy-2.0
-# apt-get -y install haproxy=2.0.\*
-apt-get -y install haproxy
-{
-echo -e "\nfrontend http"
-echo "	bind *:80"
-echo "	mode http"
-echo "	default_backend serve"
-echo -e "\nbackend serve"
-echo "	balance roundrobin"
-echo "	server 39077-web-01 52.91.133.152:80 check"
-echo "	server 39077-web-02 54.227.137.132:80 check"
-} >> /etc/haproxy/haproxy.cfg
-echo "ENABLED=1">>/etc/default/haproxy
-service haproxy restart
+# Configures a new Ubuntu server with a HAproxy load-balancer
+apt-get -y install software-properties-common
+add-apt-repository -y ppa:vbernat/haproxy-1.8
+apt-get -y update
+apt-get -y install haproxy=1.8.\*
+sed -i '/errorfile 504/a listen thelaura' /etc/haproxy/haproxy.cfg
+sed -i '/listen thelaura/a         bind :80' /etc/haproxy/haproxy.cfg
+sed -i '/bind :80/a         mode http' /etc/haproxy/haproxy.cfg
+sed -i '/mode http/a         server 39077-web-01 52.91.133.152:80 check' /etc/haproxy/haproxy.cfg
+sed -i '/server 39077-web-01 52.91.133.152:80 check/a         server 39077-web-02 54.227.137.132:80 check' /etc/haproxy/haproxy.cfg
+sed -i '/#EXTRAOPTS="-de -m 16"/a ENABLED=1' /etc/default/haproxy
+service haproxy start
