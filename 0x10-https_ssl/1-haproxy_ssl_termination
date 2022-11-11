@@ -40,5 +40,5 @@ frontend haproxy-main
         default_backend $DOMAIN_NAME-backend                                                                                                                  
 backend my_backend_1                                                                                                                                          
         balance roundrobin                                                                                                                                    
-        server 39077-web-01 52.91.133.152:80 check                                                                                                            
-        server 39077-web-02 54.227.137.132:80 check 
+        server 39077-web-01 54.237.8.233:80 check                                                                                                            
+        server 39077-web-02 100.26.57.122:80 check 
